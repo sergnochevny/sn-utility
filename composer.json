@@ -13,12 +13,6 @@
       "email": "serg.nochevny@engineering.ait.com"
     }
   ],
-  "repositories": [
-    {
-      "type": "git",
-      "url": "git@gitlab.ait.com:ait/utilities.git"
-    }
-  ],
   "autoload": {
     "psr-4": {
       "ait\\utilities\\": ""
