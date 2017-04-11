@@ -1,0 +1,35 @@
+{
+  "name": "ait/utilities",
+  "description": "AIT Yii2 Utilities Library",
+  "type": "library",
+  "minimum-stability": "stable",
+  "require": {
+    "php": ">=5.6",
+    "yiisoft/yii2": "*"
+  },
+  "authors": [
+    {
+      "name": "Serg Nochevny",
+      "email": "serg.nochevny@engineering.ait.com"
+    }
+  ],
+  "repositories": [
+    {
+      "type": "git",
+      "url": "git@gitlab.ait.com:ait/utilities.git"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "ait\\utilities\\": ""
+    }
+  },
+  "config": {
+    "fxp-asset": {
+      "installer-paths": {
+        "npm-asset-library": "vendor/npm",
+        "bower-asset-library": "vendor/bower"
+      }
+    }
+  }
+}
