@@ -9,6 +9,7 @@ use yii\helpers\FileHelper;
 
 
 class ImageHelper {
+
     private $file;
     private $image;
     private $width;
