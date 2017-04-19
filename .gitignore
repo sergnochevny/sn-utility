@@ -51,8 +51,7 @@ crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 ### Yii template
-assets/*
-!assets/.gitignore
+
 protected/runtime/*
 !protected/runtime/.gitignore
 protected/data/*.db

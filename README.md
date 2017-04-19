@@ -5,6 +5,22 @@ Utilities Library
 * [Utilities elements:](#utilities-elements)
     - [AuditColumn](##auditcolumn)
     - [MobileDetect](##mobiledetect)
+    - [Traits]
+        - [SaveContextTrait](##SaveContextTrait)
+    - [Helpers]
+        - [DecodePurifyHelper]
+        - [HttpHelper]
+        - [ImageHelper]
+    - [Gehaviors]
+        - [ChildexistsBehavior]
+        - [GencodeBehavior]
+        - [GlobalAccessBehavior]
+        - [LastActionBehavior]
+        - [ManyToManyBehavior]
+        - [SluggableBehavior]
+        - [UploadBehavior]
+    - [Assets utilities]
+        - [AssetGzipConverter](##assetgzipconverter)
 
 
 
@@ -38,7 +54,7 @@ to the require section of your `composer.json` file.
 ```php
         ...
         [
-            'class' => 'backend\utilities\AuditColumn',
+            'class' => 'ait\utilities\AuditColumn',
             'visualAttributes' => [
                 'status' => function ($model, $attr) {
                     return [$model->getAttributeLabel($attr), Order::getCurrentStatus($model->$attr)];
@@ -70,8 +86,24 @@ to the require section of your `composer.json` file.
 class AppAsset extends AssetBundle
 {
     ...
-    $md = new \backend\utilities\MobileDetect();
+    $md = new ait\utilities\MobileDetect();
     if ($md->isMobile()) $grid_params['pager'] = ['maxButtonCount' => 6];
     ...
 }
+```
+
+## AssetGzipConverter
+-------------------------------
+
+### AssetGzipConverter to compress resources usage:
+
+```php
+        'assetManager' => [
+            ...
+
+            ...
+            'converter' => [
+                'class' => 'ait\utilities\assets\AssetGzipConverter'
+            ]
+        ],
 ```
