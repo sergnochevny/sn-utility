@@ -47,7 +47,7 @@ to the require section of your `composer.json` file.
 # Utilities elements
 -----------------
 
-## AuditColumn:
+## AuditColumn
 
 ### AuditColumn for GridView
 
