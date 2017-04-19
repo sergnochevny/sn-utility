@@ -3,8 +3,8 @@ Utilities Library
 
 * [Instalation](#installation)
 * [Utilities elements:](#utilities-elements)
-    - [AuditColumn](##auditcolumn)
-    - [MobileDetect](##mobiledetect)
+    - [AuditColumn](##audit-column)
+    - [MobileDetect](##mobile-detect)
     - [Traits]()
         - [SaveContextTrait](##SaveContextTrait)
     - [Helpers]()
@@ -47,7 +47,7 @@ to the require section of your `composer.json` file.
 # Utilities elements
 -----------------
 
-## AuditColumn:
+## AuditColumn
 
 ### AuditColumn for GridView
 
