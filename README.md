@@ -11,6 +11,7 @@ Utilities Library
         - [DecodePurifyHelper]()
         - [HttpHelper]()
         - [ImageHelper]()
+        - [MIMEHelper]()
     - [Gehaviors]()
         - [ChildexistsBehavior]()
         - [GencodeBehavior]()
