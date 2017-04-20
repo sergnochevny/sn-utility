@@ -14,9 +14,12 @@ class MIMEHelper
         if (function_exists('mime_content_type')) {
             return mime_content_type($filename);
         }
-        $fileinfo = finfo_open(FILEINFO_MIME_TYPE);
-        $file_mime_type = finfo_file($fileinfo, $filename);
-        finfo_close($fileinfo);
-        return $file_mime_type;
+        if(function_exists('finfo_open')){
+            $fileinfo = finfo_open(FILEINFO_MIME_TYPE);
+            $file_mime_type = finfo_file($fileinfo, $filename);
+            finfo_close($fileinfo);
+            return $file_mime_type;
+        }
+        return (new MIMEReader($filename))->getType();
     }
 }
