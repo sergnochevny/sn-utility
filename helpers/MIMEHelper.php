@@ -9,7 +9,7 @@ namespace ait\utilities\helpers;
 
 class MIMEHelper
 {
-    public function getFileType($filename)
+    public static function getFileType($filename)
     {
         if (function_exists('mime_content_type')) {
             return mime_content_type($filename);
