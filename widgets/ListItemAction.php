@@ -94,7 +94,7 @@ class ListItemAction extends Widget
         $this->initDefaultButton('update', 'pencil');
         $this->initDefaultButton('delete', 'trash', [
             'data-confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
-            'data-method' => 'post',
+            'data-method' => 'post', 'data-pjax' => true,
         ]);
     }
 
