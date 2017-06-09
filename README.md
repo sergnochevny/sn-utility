@@ -119,7 +119,7 @@ class AppAsset extends AssetBundle
 ```php
 
   'assetManager' => [
-      'class' => 'app\components\AssetManager',
+      'class' => 'ait\utilities\AssetManager',
       'directInjection' => true;
       'beforeCopy' => function ($from, $to) {
           return (!file_exists($to) || (filemtime($from) !== filemtime($to)) || (filesize($from)) !== filesize($to));
