@@ -23,7 +23,8 @@ Utilities Library
         - [UploadBehavior]()
     - [Assets utilities]()
         - [AssetGzipConverter](#assetgzipconverter)
-
+    - [Components]()
+        - [AssetManager](#assetmanager)
 
 
 # Installation
@@ -108,4 +109,22 @@ class AppAsset extends AssetBundle
                 'class' => 'ait\utilities\assets\AssetGzipConverter'
             ]
         ],
+```
+
+## AssetManager
+-------------------------------
+
+### AssetManager to resources usage:
+
+```php
+
+  'assetManager' => [
+      'class' => 'app\components\AssetManager',
+      'directInjection' => true;
+      'beforeCopy' => function ($from, $to) {
+          return (!file_exists($to) || (filemtime($from) !== filemtime($to)) || (filesize($from)) !== filesize($to));
+      };
+      'excludeOptions' => ['only' => ['*.js', '*.css', '*.map']];
+  ],
+
 ```
