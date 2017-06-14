@@ -122,7 +122,7 @@ class AppAsset extends AssetBundle
       'class' => 'ait\utilities\components\AssetManager',
       'directInjection' => true;
       'beforeCopy' => function ($from, $to) {
-          return (!file_exists($to) || (filemtime($from) !== filemtime($to)) || (filesize($from)) !== filesize($to));
+          return !is_file($from) || !file_exists($to) || (filesize($from) !== filesize($to));
       };
       'excludeOptions' => ['only' => ['*.js', '*.css', '*.map']];
   ],

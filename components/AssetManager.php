@@ -7,8 +7,9 @@
 namespace ait\utilities\components;
 
 
+use ait\utilities\helpers\FileHelper;
 use Yii;
-use yii\helpers\FileHelper;
+use yii\helpers\StringHelper;
 use yii\helpers\Url;
 
 /**
@@ -19,13 +20,12 @@ use yii\helpers\Url;
  *      'class' => 'app\components\AssetManager',
  *      'directInjection' => true;
  *      'beforeCopy' => function ($from, $to) {
- *          return (!file_exists($to) || (filemtime($from) !== filemtime($to)) || (filesize($from)) !== filesize($to));
+ *          return !is_file($from) || !file_exists($to) || (filesize($from) !== filesize($to));
  *      };
  *      'excludeOptions' => ['only' => ['*.js', '*.css', '*.map']];
  *  ],
  *
  */
-
 class AssetManager extends \yii\web\AssetManager
 {
     public $directInjection = false;
@@ -33,6 +33,7 @@ class AssetManager extends \yii\web\AssetManager
 
     protected function publishFile($src)
     {
+        $baseUrl = $this->baseUrl;
         $fileName = basename($src);
         $dir = !$this->directInjection ? $this->hash($src) : '';
         $dstDir = $this->basePath . (!empty($dir) ? DIRECTORY_SEPARATOR : '') . $dir;
@@ -42,7 +43,15 @@ class AssetManager extends \yii\web\AssetManager
             FileHelper::createDirectory($dstDir, $this->dirMode, true);
         }
 
-        if ($this->linkAssets) {
+        if ($this->directInjection &&
+            StringHelper::startsWith(FileHelper::normalizePath($src),
+                FileHelper::normalizePath(Yii::getAlias('@webroot')))
+        ) {
+            $dstFile = FileHelper::normalizePath($src);
+            $baseUrl = StringHelper::dirname($dstFile);
+            $baseUrl = str_replace(FileHelper::normalizePath(Yii::getAlias('@webroot')), '', $baseUrl);
+            $baseUrl = str_replace('\\', '/', $baseUrl);
+        } elseif ($this->linkAssets) {
             if (!is_file($dstFile)) {
                 symlink($src, $dstFile);
             }
@@ -53,11 +62,12 @@ class AssetManager extends \yii\web\AssetManager
             }
         }
 
-        return [$dstFile, $this->baseUrl . (!empty($dir) ? '/' : '') . "$dir/$fileName"];
+        return [$dstFile, $baseUrl . (!empty($dir) ? '/' : '') . "$dir/$fileName"];
     }
 
     protected function publishDirectory($src, $options)
     {
+        $baseUrl = $this->baseUrl;
         $dir = !$this->directInjection ? $this->hash($src) : '';
         $dstDir = $this->basePath . (!empty($dir) ? DIRECTORY_SEPARATOR : '') . $dir;
         if ($this->linkAssets && !$this->directInjection) {
@@ -70,34 +80,46 @@ class AssetManager extends \yii\web\AssetManager
             ($this->forceCopy && !isset($options['forceCopy'])) || !is_dir($dstDir)
         ) {
 
-            $opts = array_merge(
-                $options,
-                [
-                    'dirMode' => $this->dirMode,
-                    'fileMode' => $this->fileMode,
-                    'copyEmptyDirectories' => false,
-                ]
-            );
+            if ($this->directInjection &&
+                StringHelper::startsWith(FileHelper::normalizePath($src),
+                    FileHelper::normalizePath(Yii::getAlias('@webroot')))
+            ) {
+                $dstDir = FileHelper::normalizePath($src);
+                $baseUrl = FileHelper::normalizePath($src);
+                $baseUrl = str_replace(FileHelper::normalizePath(Yii::getAlias('@webroot')), '', $baseUrl);
+                $baseUrl = str_replace('\\', '/', $baseUrl);
+            } else {
+                $opts = array_merge(
+                    $options,
+                    [
+                        'dirMode' => $this->dirMode,
+                        'fileMode' => $this->fileMode,
+                        'copyEmptyDirectories' => false,
+                    ]
+                );
 
-            if ($this->directInjection && !empty($this->excludeOptions)) {
-                $opts = array_merge($opts, $this->excludeOptions);
-            }
-            if (!isset($opts['beforeCopy'])) {
-                if ($this->beforeCopy !== null) {
-                    $opts['beforeCopy'] = $this->beforeCopy;
-                } else {
-                    $opts['beforeCopy'] = function ($from, $to) {
-                        return strncmp(basename($from), '.', 1) !== 0;
-                    };
+                if ($this->directInjection && !empty($this->excludeOptions)) {
+                    $opts = array_merge($opts, $this->excludeOptions);
                 }
+                if (!isset($opts['beforeCopy'])) {
+                    if ($this->beforeCopy !== null) {
+                        $opts['beforeCopy'] = $this->beforeCopy;
+                    } else {
+                        $opts['beforeCopy'] = function ($from, $to) {
+                            return strncmp(basename($from), '.', 1) !== 0;
+                        };
+                    }
+                }
+                if (!isset($opts['afterCopy']) && $this->afterCopy !== null) {
+                    $opts['afterCopy'] = $this->afterCopy;
+                }
+                $opts['link'] = $this->linkAssets;
+                FileHelper::copyDirectory($src, $dstDir, $opts);
+
             }
-            if (!isset($opts['afterCopy']) && $this->afterCopy !== null) {
-                $opts['afterCopy'] = $this->afterCopy;
-            }
-            FileHelper::copyDirectory($src, $dstDir, $opts);
         }
 
-        return [$dstDir, $this->baseUrl . (!empty($dir) ? '/' : '') . $dir];
+        return [$dstDir, $baseUrl . (!empty($dir) ? '/' : '') . $dir];
     }
 
     public function getAssetUrl($bundle, $asset)
@@ -127,6 +149,4 @@ class AssetManager extends \yii\web\AssetManager
             return "$baseUrl/$asset";
         }
     }
-
-
 }

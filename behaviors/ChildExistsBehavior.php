@@ -9,7 +9,7 @@ use yii\db\ActiveRecord;
 use yii\validators\ExistValidator;
 
 /**
- * Class ChildexistsBehavior
+ * Class ChildExistsBehavior
  * @package ait\utilities\behaviors
  *
  *    public function behaviors()
@@ -27,7 +27,7 @@ use yii\validators\ExistValidator;
  *   }
  *
  */
-class ChildexistsBehavior extends Behavior
+class ChildExistsBehavior extends Behavior
 {
 
     private $beforeDelAction = 'beforeDelAction';
