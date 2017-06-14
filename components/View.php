@@ -23,6 +23,7 @@ class View extends \yii\web\View
     ];
 
     protected $registeredJsFiles = [];
+    protected $forceJsFiles = [];
 
     /**
      * @inheritdoc
@@ -83,7 +84,13 @@ class View extends \yii\web\View
                 $js_stack[] = "['" . implode("','", array_keys($jsFiles)) . "']";
             }
         }
-        $_scripts[] = implode(",", $js_stack) . "], function() {";
+        $_scripts[] = implode(",", $js_stack) . "], [";
+
+        $js_stack = '';
+        if (!empty($this->forceJsFiles)) {
+            $js_stack = "'" . implode("','", array_keys($this->forceJsFiles)) . "'";
+        }
+        $_scripts[] = $js_stack . "], function() {";
 
         if (!empty($this->js[self::POS_HEAD])) {
             $_scripts[] = $this->js[self::POS_HEAD];
@@ -150,6 +157,7 @@ class View extends \yii\web\View
     {
         parent::clear();
         $this->registeredJsFiles = [];
+        $this->forceJsFiles = [];
         foreach ($this->deepLevels as $key => $value) {
             $this->deepLevels[$key] = 0;
         };
@@ -165,15 +173,18 @@ class View extends \yii\web\View
 
         $depends = ArrayHelper::remove($options, 'depends', []);
         $level = ArrayHelper::remove($options, 'level', 0);
+        $forceLoad = ArrayHelper::remove($options, 'force', false);
 
         if (empty($depends)) {
             $position = ArrayHelper::remove($options, 'position', self::POS_END);
             if (empty($this->registeredJsFiles[$key])) {
                 $this->registeredJsFiles[$key] = $key;
+                if ($forceLoad) $this->forceJsFiles[$key] = $key;
                 $level = empty($level) ? $level : $this->deepLevels[$position] - --$level;
                 $this->jsFiles[$position][$level][$key] = Html::jsFile($url, $options);
             }
         } else {
+            $options = $forceLoad ? array_merge($options, ['force', $forceLoad]) : $options;
             $this->getAssetManager()->bundles[$key] = Yii::createObject([
                 'class' => AssetBundle::className(),
                 'baseUrl' => '',
