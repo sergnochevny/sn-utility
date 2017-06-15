@@ -76,63 +76,55 @@ class View extends \yii\web\View
             $lines[] = implode("','", array_keys($this->cssFiles));
         }
         $lines[] = "']);";
-
         $lines[] = "window.fn([";
-        $js_stack = [];
+        $scripts = [];
         if (!empty($this->jsFiles[self::POS_HEAD])) {
             ksort($this->jsFiles[self::POS_HEAD], SORT_NUMERIC);
             foreach ($this->jsFiles[self::POS_HEAD] as $jsFiles) {
-                $js_stack[] = "['" . implode("','", array_keys($jsFiles)) . "']";
+                $scripts[] = "['" . implode("','", array_keys($jsFiles)) . "']";
             }
         }
 
         if (!empty($this->jsFiles[self::POS_END])) {
             ksort($this->jsFiles[self::POS_END], SORT_NUMERIC);
             foreach ($this->jsFiles[self::POS_END] as $jsFiles) {
-                $js_stack[] = "['" . implode("','", array_keys($jsFiles)) . "']";
+                $scripts[] = "['" . implode("','", array_keys($jsFiles)) . "']";
             }
         }
-        $lines[] = implode(",", $js_stack) . "], [";
+        $lines[] = implode(",", $scripts) . "], [";
 
-        $js_stack = '';
+        $scripts = '';
         if (!empty($this->forceJsFiles)) {
-            $js_stack = "'" . implode("','", array_keys($this->forceJsFiles)) . "'";
+            $scripts = "'" . implode("','", array_keys($this->forceJsFiles)) . "'";
         }
-        $lines[] = $js_stack . "], function() {";
+        $lines[] = $scripts . "], function() {";
 
         if (!empty($this->js[self::POS_HEAD])) {
-            $lines[] = $this->js[self::POS_HEAD];
+            $lines[] = implode("", $this->js[self::POS_HEAD]);
         }
 
         if ($ajaxMode) {
-            $scripts = [];
             if (!empty($this->js[self::POS_END])) {
-                $scripts[] = implode("", $this->js[self::POS_END]);
+                $lines[] = implode("", $this->js[self::POS_END]);
             }
             if (!empty($this->js[self::POS_READY])) {
-                $scripts[] = implode("", $this->js[self::POS_READY]);
+                $lines[] = implode("", $this->js[self::POS_READY]);
             }
             if (!empty($this->js[self::POS_LOAD])) {
-                $scripts[] = implode("", $this->js[self::POS_LOAD]);
-            }
-            if (!empty($scripts)) {
-                $lines[] = Html::script(implode("", $scripts), ['type' => 'text/javascript']);
+                $lines[] = implode("", $this->js[self::POS_LOAD]);
             }
         } else {
             if (!empty($this->js[self::POS_END])) {
-                $lines[] = $this->js[self::POS_END];
+                $lines[] = implode("", $this->js[self::POS_END]);
             }
             if (!empty($this->js[self::POS_READY])) {
-                $js = "jQuery(document).ready(function () {" . implode("", $this->js[self::POS_READY]) . "});";
-                $lines[] = $js;
+                $lines[] = "jQuery(document).ready(function () {" . implode("", $this->js[self::POS_READY]) . "});";
             }
             if (!empty($this->js[self::POS_LOAD])) {
-                $js = "jQuery(window).on('load', function () {" . implode("", $this->js[self::POS_LOAD]) . "});";
-                $lines[] = $js;
+                $lines[] = "jQuery(window).on('load', function () {" . implode("", $this->js[self::POS_LOAD]) . "});";
             }
         }
         $lines[] = '});})();';
-
 
         return (empty($lines) ? '' : preg_replace("/ {2,}/", " ", strtr(Html::script(implode("\n", $lines), ['type' => 'text/javascript']), ["\n" => '', "\r" => ''])));
     }
