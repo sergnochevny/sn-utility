@@ -69,17 +69,15 @@ class View extends \yii\web\View
      */
     protected function renderBodyEndHtml($ajaxMode)
     {
-        $lines = [];
-
-        $_scripts = ["(function(){window.fb||(window.fb=function(b){function c(i){var j=document.createElement('link');j.setAttribute('href',i),j.setAttribute('rel','stylesheet'),document.head.appendChild(j)}for(var f;0<b.length&&(f=b.shift());)c(f)});"];
-        $_scripts[] = "Array.isArray||(Array.isArray=function(b){return'[object Array]'===Object.prototype.toString.call(b)}),window.fn||(window.fn=function(b,c,d){for(var t,e=function(w){for(var x=0;x<c.length;x++){var y=c[x],z=new RegExp('^'+f(y).split('\\*').join('.*')+'$').test(w);if(!0===z)return!0}return!1},f=function(w){return w.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g,'\\$&')},g=function(w){return!!document.querySelectorAll('script[src=\''+w+'\']').length},h=function(w){return function(){console.log(w+' was loaded.'),1>--u&&d()}},s=function(w){if(!g(w)||e(w)){var x=document.createElement('script');x.setAttribute('src',w),x.onload=h(w),document.head.appendChild(x)}else h(w)()},u=b.length;0<b.length&&(t=b.shift());)if(Array.isArray(t)){var v=b.splice(0,b.length);u-=v.length,window.fn(t,c,function(){0<v.length?window.fn(v,c,d):d()})}else s(t)});";
-        $_scripts[] = "window.fb(['";
+        $lines = ["(function(){window.fb||(window.fb=function(b){function c(i){var j=document.createElement('link');j.setAttribute('href',i),j.setAttribute('rel','stylesheet'),document.head.appendChild(j)}for(var f;0<b.length&&(f=b.shift());)c(f)});"];
+        $lines[] = "Array.isArray||(Array.isArray=function(b){return'[object Array]'===Object.prototype.toString.call(b)}),window.fn||(window.fn=function(b,c,d){for(var t,e=function(w){for(var x=0;x<c.length;x++){var y=c[x],z=new RegExp('^'+f(y).split('\\*').join('.*')+'$').test(w);if(!0===z)return!0}return!1},f=function(w){return w.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g,'\\$&')},g=function(w){return!!document.querySelectorAll('script[src=\''+w+'\']').length},h=function(w){return function(){console.log(w+' was loaded.'),1>--u&&d()}},s=function(w){if(!g(w)||e(w)){var x=document.createElement('script');x.setAttribute('src',w),x.onload=h(w),document.head.appendChild(x)}else h(w)()},u=b.length;0<b.length&&(t=b.shift());)if(Array.isArray(t)){var v=b.splice(0,b.length);u-=v.length,window.fn(t,c,function(){0<v.length?window.fn(v,c,d):d()})}else s(t)});";
+        $lines[] = "window.fb(['";
         if (!empty($this->cssFiles)) {
-            $_scripts[] = implode("','", array_keys($this->cssFiles));
+            $lines[] = implode("','", array_keys($this->cssFiles));
         }
-        $_scripts[] = "']);";
+        $lines[] = "']);";
 
-        $_scripts[] = "window.fn([";
+        $lines[] = "window.fn([";
         $js_stack = [];
         if (!empty($this->jsFiles[self::POS_HEAD])) {
             ksort($this->jsFiles[self::POS_HEAD], SORT_NUMERIC);
@@ -94,16 +92,16 @@ class View extends \yii\web\View
                 $js_stack[] = "['" . implode("','", array_keys($jsFiles)) . "']";
             }
         }
-        $_scripts[] = implode(",", $js_stack) . "], [";
+        $lines[] = implode(",", $js_stack) . "], [";
 
         $js_stack = '';
         if (!empty($this->forceJsFiles)) {
             $js_stack = "'" . implode("','", array_keys($this->forceJsFiles)) . "'";
         }
-        $_scripts[] = $js_stack . "], function() {";
+        $lines[] = $js_stack . "], function() {";
 
         if (!empty($this->js[self::POS_HEAD])) {
-            $_scripts[] = $this->js[self::POS_HEAD];
+            $lines[] = $this->js[self::POS_HEAD];
         }
 
         if ($ajaxMode) {
@@ -122,21 +120,21 @@ class View extends \yii\web\View
             }
         } else {
             if (!empty($this->js[self::POS_END])) {
-                $_scripts[] = $this->js[self::POS_END];
+                $lines[] = $this->js[self::POS_END];
             }
             if (!empty($this->js[self::POS_READY])) {
                 $js = "jQuery(document).ready(function () {" . implode("", $this->js[self::POS_READY]) . "});";
-                $_scripts[] = $js;
+                $lines[] = $js;
             }
             if (!empty($this->js[self::POS_LOAD])) {
                 $js = "jQuery(window).on('load', function () {" . implode("", $this->js[self::POS_LOAD]) . "});";
-                $_scripts[] = $js;
+                $lines[] = $js;
             }
         }
-        $_scripts[] = '});})();';
+        $lines[] = '});})();';
 
 
-        return (empty($lines) ? '' : implode("", $lines)) . (empty($_scripts) ? '' : preg_replace("/ {2,}/", " ", strtr(Html::script(implode("\n", $_scripts), ['type' => 'text/javascript']), ["\n" => '', "\r" => ''])));
+        return (empty($lines) ? '' : preg_replace("/ {2,}/", " ", strtr(Html::script(implode("\n", $lines), ['type' => 'text/javascript']), ["\n" => '', "\r" => ''])));
     }
 
     /**
