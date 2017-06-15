@@ -12,6 +12,16 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\web\AssetBundle;
 
+/**
+ * Class View
+ * @package ait\utilities\components
+ *
+ * Appended loadJs for post loading all scripts & styles that will be registered by $this->register*** functions
+ * Prevented to append loaded scripts. Add 'force' => true to force load script. see below.
+ * $this->registerJsFile('@web/js/modules/app/search-cities.min.js', ['depends' => [JqueryAsset::className()], 'force' => true]);
+ *
+ */
+
 class View extends \yii\web\View
 {
     protected $deepLevels = [
@@ -61,15 +71,15 @@ class View extends \yii\web\View
     {
         $lines = [];
 
-        $_scripts = ["(function(){function fb(a){function d(g){var h=document.createElement('link');h.setAttribute('href',g),h.setAttribute('rel','stylesheet'),document.head.appendChild(h)}for(var e;0<a.length&&(e=a.shift());)d(e)};"];
-        $_scripts[] = "Array.isArray||(Array.isArray=function(a){return'[object Array]'===Object.prototype.toString.call(a)});function fa(j,k){function l(q){return function(){console.log(q+' was loaded.'),1>--o&&k()}}function m(q){var r=document.createElement('script');r.setAttribute('src',q),r.onload=l(q),document.head.appendChild(r)}for(var n,o=j.length;0<j.length&&(n=j.shift());)if(Array.isArray(n)){var p=j.splice(0,j.length);o-=p.length,fa(n,function(){0<p.length?fa(p,k):k()})}else m(n)};";
-        $_scripts[] = "fb(['";
+        $_scripts = ["(function(){window.fb||(window.fb=function(b){function c(i){var j=document.createElement('link');j.setAttribute('href',i),j.setAttribute('rel','stylesheet'),document.head.appendChild(j)}for(var f;0<b.length&&(f=b.shift());)c(f)});"];
+        $_scripts[] = "Array.isArray||(Array.isArray=function(b){return'[object Array]'===Object.prototype.toString.call(b)}),window.fn||(window.fn=function(b,c,d){for(var t,e=function(w){for(var x=0;x<c.length;x++){var y=c[x],z=new RegExp('^'+f(y).split('\\*').join('.*')+'$').test(w);if(!0===z)return!0}return!1},f=function(w){return w.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g,'\\$&')},g=function(w){return!!document.querySelectorAll('script[src=\''+w+'\']').length},h=function(w){return function(){console.log(w+' was loaded.'),1>--u&&d()}},s=function(w){if(!g(w)||e(w)){var x=document.createElement('script');x.setAttribute('src',w),x.onload=h(w),document.head.appendChild(x)}else h(w)()},u=b.length;0<b.length&&(t=b.shift());)if(Array.isArray(t)){var v=b.splice(0,b.length);u-=v.length,window.fn(t,c,function(){0<v.length?window.fn(v,c,d):d()})}else s(t)});";
+        $_scripts[] = "window.fb(['";
         if (!empty($this->cssFiles)) {
             $_scripts[] = implode("','", array_keys($this->cssFiles));
         }
         $_scripts[] = "']);";
 
-        $_scripts[] = "fa([";
+        $_scripts[] = "window.fn([";
         $js_stack = [];
         if (!empty($this->jsFiles[self::POS_HEAD])) {
             ksort($this->jsFiles[self::POS_HEAD], SORT_NUMERIC);
@@ -184,7 +194,7 @@ class View extends \yii\web\View
                 $this->jsFiles[$position][$level][$key] = Html::jsFile($url, $options);
             }
         } else {
-            $options = $forceLoad ? array_merge($options, ['force', $forceLoad]) : $options;
+            $options = $forceLoad ? array_merge($options, ['force' => $forceLoad]) : $options;
             $this->getAssetManager()->bundles[$key] = Yii::createObject([
                 'class' => AssetBundle::className(),
                 'baseUrl' => '',
