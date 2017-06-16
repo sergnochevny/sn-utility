@@ -33,7 +33,7 @@ class View extends \yii\web\View
     ];
 
     protected $registeredJsFiles = [];
-    protected $forceJsFiles = [];
+    protected $forcedJsFiles = [];
 
     /**
      * @inheritdoc
@@ -76,6 +76,11 @@ class View extends \yii\web\View
             $lines[] = implode("','", array_keys($this->cssFiles));
         }
         $lines[] = "']);";
+        $lines[] = "window.yii&&function(a){a&&Array.isArray(a)&&(window.yii.reloadableScripts=window.yii.reloadableScripts.concat(a))}(";
+        if (!empty($this->forcedJsFiles)) {
+            $lines[] = "['" . implode("','", array_keys($this->forcedJsFiles)) . "']";
+        }
+        $lines[] = ");";
         $lines[] = "window.fn([";
         $scripts = [];
         if (!empty($this->jsFiles[self::POS_HEAD])) {
@@ -94,8 +99,8 @@ class View extends \yii\web\View
         $lines[] = implode(",", $scripts) . "], [";
 
         $scripts = '';
-        if (!empty($this->forceJsFiles)) {
-            $scripts = "'" . implode("','", array_keys($this->forceJsFiles)) . "'";
+        if (!empty($this->forcedJsFiles)) {
+            $scripts = "'" . implode("','", array_keys($this->forcedJsFiles)) . "'";
         }
         $lines[] = $scripts . "], function() {";
 
@@ -157,7 +162,7 @@ class View extends \yii\web\View
     {
         parent::clear();
         $this->registeredJsFiles = [];
-        $this->forceJsFiles = [];
+        $this->forcedJsFiles = [];
         foreach ($this->deepLevels as $key => $value) {
             $this->deepLevels[$key] = 0;
         };
@@ -179,7 +184,7 @@ class View extends \yii\web\View
             $position = ArrayHelper::remove($options, 'position', self::POS_END);
             if (empty($this->registeredJsFiles[$key])) {
                 $this->registeredJsFiles[$key] = $key;
-                if ($forceLoad) $this->forceJsFiles[$key] = $key;
+                if ($forceLoad) $this->forcedJsFiles[$key] = $key;
                 $level = empty($level) ? $level : $this->deepLevels[$position] - --$level;
                 $this->jsFiles[$position][$level][$key] = Html::jsFile($url, $options);
             }
