@@ -18,7 +18,9 @@ use yii\helpers\Url;
  *
  *  'assetManager' => [
  *      'class' => 'app\components\AssetManager',
- *      'directInjection' => true;
+ *      'lazyPublish' => true;
+ *      'injectionCssScheme' => AssetManager::SCHEME_INJECTION_INLINE,
+ *      'injectionJsScheme' => AssetManager::SCHEME_INJECTION_ONLOAD,
  *      'beforeCopy' => function ($from, $to) {
  *          return !is_file($from) || !file_exists($to) || (filesize($from) !== filesize($to));
  *      };
@@ -28,14 +30,40 @@ use yii\helpers\Url;
  */
 class AssetManager extends \yii\web\AssetManager
 {
-    public $directInjection = false;
+    /**
+     * Scripts an Styles injection scheme
+     */
+    const SCHEME_INJECTION_STANDARD = 1;
+    const SCHEME_INJECTION_ONLOAD = 2;
+    const SCHEME_INJECTION_INLINE = 3;
+
+    public $injectionCssScheme = self::SCHEME_INJECTION_STANDARD;
+    public $injectionJsScheme = self::SCHEME_INJECTION_STANDARD;
+
+    public $lazyPublish = false;
     public $excludeOptions = [];
+
+    private function assetIsJs($asset)
+    {
+        return preg_match('#^(.*)\.js$#', $asset);
+    }
+
+    private function assetIsCss($asset)
+    {
+        return preg_match('#^(.*)\.css$#', $asset);
+    }
+
+    private function assetIsInline($asset)
+    {
+        return ($this->assetIsCss($asset) && $this->injectionCssScheme == AssetManager::SCHEME_INJECTION_INLINE) ||
+            ($this->assetIsJs($asset) && $this->injectionJsScheme == AssetManager::SCHEME_INJECTION_INLINE);
+    }
 
     protected function publishFile($src)
     {
         $baseUrl = $this->baseUrl;
         $fileName = basename($src);
-        $dir = !$this->directInjection ? $this->hash($src) : '';
+        $dir = !$this->lazyPublish ? $this->hash($src) : '';
         $dstDir = $this->basePath . (!empty($dir) ? DIRECTORY_SEPARATOR : '') . $dir;
         $dstFile = $dstDir . DIRECTORY_SEPARATOR . $fileName;
 
@@ -43,7 +71,7 @@ class AssetManager extends \yii\web\AssetManager
             FileHelper::createDirectory($dstDir, $this->dirMode, true);
         }
 
-        if ($this->directInjection &&
+        if ($this->lazyPublish &&
             StringHelper::startsWith(FileHelper::normalizePath($src),
                 FileHelper::normalizePath(Yii::getAlias('@webroot')))
         ) {
@@ -68,19 +96,19 @@ class AssetManager extends \yii\web\AssetManager
     protected function publishDirectory($src, $options)
     {
         $baseUrl = $this->baseUrl;
-        $dir = !$this->directInjection ? $this->hash($src) : '';
+        $dir = !$this->lazyPublish ? $this->hash($src) : '';
         $dstDir = $this->basePath . (!empty($dir) ? DIRECTORY_SEPARATOR : '') . $dir;
-        if ($this->linkAssets && !$this->directInjection) {
+        if ($this->linkAssets && !$this->lazyPublish) {
             if (!is_dir($dstDir)) {
                 FileHelper::createDirectory(dirname($dstDir), $this->dirMode, true);
                 symlink($src, $dstDir);
             }
-        } elseif ($this->directInjection ||
+        } elseif ($this->lazyPublish ||
             !empty($options['forceCopy']) ||
             ($this->forceCopy && !isset($options['forceCopy'])) || !is_dir($dstDir)
         ) {
 
-            if ($this->directInjection &&
+            if ($this->lazyPublish &&
                 StringHelper::startsWith(FileHelper::normalizePath($src),
                     FileHelper::normalizePath(Yii::getAlias('@webroot')))
             ) {
@@ -98,7 +126,7 @@ class AssetManager extends \yii\web\AssetManager
                     ]
                 );
 
-                if ($this->directInjection && !empty($this->excludeOptions)) {
+                if ($this->lazyPublish && !empty($this->excludeOptions)) {
                     $opts = array_merge($opts, $this->excludeOptions);
                 }
                 if (!isset($opts['beforeCopy'])) {
@@ -122,6 +150,9 @@ class AssetManager extends \yii\web\AssetManager
         return [$dstDir, $baseUrl . (!empty($dir) ? '/' : '') . $dir];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getAssetUrl($bundle, $asset)
     {
         if (($actualAsset = $this->resolveAsset($bundle, $asset)) !== false) {
@@ -143,7 +174,9 @@ class AssetManager extends \yii\web\AssetManager
             return $asset;
         }
 
-        if ($this->appendTimestamp && ($timestamp = @filemtime("$basePath/$asset")) > 0) {
+        if ($this->assetIsInline($asset)) {
+            return "$basePath/$asset";
+        } elseif ($this->appendTimestamp && ($timestamp = @filemtime("$basePath/$asset")) > 0) {
             return "$baseUrl/$asset?v=$timestamp";
         } else {
             return "$baseUrl/$asset";

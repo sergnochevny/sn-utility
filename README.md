@@ -116,12 +116,20 @@ class AppAsset extends AssetBundle
 
 ### AssetManager to resources usage:
 
+    * Additional parameters:
+    - lazyPublish = true - When there are minified resources in the publication directory to prevent copying it
+    - injectionCssScheme - Css injection sheme into HTML response
+    - injectionJsScheme - Js injection sheme into HTML response
+
 ```php
 
         'assetManager' => [
             'class' => 'ait\utilities\components\AssetManager',
             'linkAssets' => true,
-            'directInjection' => true,
+            'lazyPublish' => true,
+            'injectionCssScheme' => AssetManager::SCHEME_INJECTION_INLINE,
+            'injectionJsScheme' => AssetManager::SCHEME_INJECTION_ONLOAD,
+
             'beforeCopy' => function ($from, $to) {
                 return !is_file($from) || !file_exists($to) || (filesize($from) !== filesize($to));
             },
@@ -201,7 +209,10 @@ class AppAsset extends AssetBundle
 
  * Prevented to append loaded scripts like yii.js. Add 'force' => true to force load script. see ex. below.
 
-    ex: $this->registerJsFile('@web/js/modules/app/search-cities.min.js', ['depends' => [JqueryAsset::className()], 'force' => true]);
+    example:
+    ```php
+        $this->registerJsFile('@web/js/modules/app/search-cities.min.js', ['depends' => [JqueryAsset::className()], 'force' => true]);
+    ```
 
  * Register component in the app configuration in section components to use it:
 ```php
