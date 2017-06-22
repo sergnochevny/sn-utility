@@ -101,6 +101,7 @@ class View extends \yii\web\View
             $lines[] = "']);";
         }
         if ($am->injectionJsScheme == AssetManager::SCHEME_INJECTION_ONLOAD) {
+            if (empty($lines)) $lines = ["(function(){"];
             $lines[] = "Array.isArray||(Array.isArray=function(b){return'[object Array]'===Object.prototype.toString.call(b)}),window.fn||(window.fn=function(b,c,d){for(var t,e=function(w){for(var x=0;x<c.length;x++){var y=c[x],z=new RegExp('^'+f(y).split('\\*').join('.*')+'$').test(w);if(!0===z)return!0}return!1},f=function(w){return w.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g,'\\$&')},g=function(w){return!!document.querySelectorAll('script[src=\''+w+'\']').length},h=function(w){return function(){console.log(w+' was loaded.'),1>--u&&d()}},s=function(w){if((!g(w))||e(w)){var x=document.createElement('script');x.setAttribute('src',w),x.onload=h(w),document.body.appendChild(x)}else h(w)()},u=b.length;0<b.length&&(t=b.shift());)if(Array.isArray(t)){var v=b.splice(0,b.length);u-=v.length,window.fn(t,c,function(){0<v.length?window.fn(v,c,d):d()})}else s(t)});";
             $lines[] = "window.yii&&function(a){a&&Array.isArray(a)&&(window.yii.reloadableScripts=window.yii.reloadableScripts.concat(a))}(";
             if (!empty($this->forcedJsFiles)) {
@@ -129,8 +130,8 @@ class View extends \yii\web\View
             }
             $lines[] = $scripts . "], function() {";
             $this->renderJs($ajaxMode, $lines);
-            $lines[] = '});})();';
         }
+        if (!empty($lines)) $lines[] = '});})();';
 
         return (empty($lines) ? '' : preg_replace("/ {2,}/", " ", strtr(Html::script(implode("\n", $lines), ['type' => 'text/javascript']), ["\n" => '', "\r" => ''])));
     }
@@ -160,22 +161,18 @@ class View extends \yii\web\View
         if (!empty($this->metaTags)) {
             $lines[] = implode("\n", $this->metaTags);
         }
-
         if (!empty($this->linkTags)) {
             $lines[] = implode("\n", $this->linkTags);
         }
-
         if (!empty($this->css)) {
             $lines[] = implode("\n", $this->css);
         }
-
         $am = $this->getAssetManager();
         if ($am->injectionCssScheme !== AssetManager::SCHEME_INJECTION_ONLOAD) {
             if (!empty($this->cssFiles)) {
                 $lines[] = implode("\n", $this->cssFiles);
             }
         }
-
         if ($am->injectionJsScheme !== AssetManager::SCHEME_INJECTION_ONLOAD) {
             if (!empty($this->jsFiles[self::POS_HEAD])) {
                 $lines[] = implode("\n", $this->jsFiles[self::POS_HEAD]);
@@ -286,7 +283,7 @@ class View extends \yii\web\View
                 $noscript = true;
             }
 
-            $css = Html::script(file_get_contents($url), $options);
+            $css = Html::style(file_get_contents($url), $options);
             $css = !empty($noscript) ? '<noscript>' . $css . '</noscript>' : $css;
             $css = !empty($condition) ? self::wrapIntoCondition($css, $condition) : $css;
 
