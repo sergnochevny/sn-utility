@@ -175,6 +175,7 @@ class AssetManager extends \yii\web\AssetManager
         }
 
         if ($this->assetIsInline($asset)) {
+            $basePath = !empty($basePath) ? $basePath : Yii::getAlias('@webroot');
             return FileHelper::normalizePath("$basePath/$asset");
         } elseif ($this->appendTimestamp && ($timestamp = @filemtime("$basePath/$asset")) > 0) {
             return "$baseUrl/$asset?v=$timestamp";
