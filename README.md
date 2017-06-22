@@ -23,6 +23,8 @@ Utilities Library
         - [UploadBehavior]()
     - [Assets utilities]()
         - [AssetGzipConverter](#assetgzipconverter)
+        - [ExtLibAsset](##extlibasset)
+        - [Es5ShimAssets](##es5shimassets)
     - [Components]()
         - [AssetManager](#assetmanager)
         - [View](#view)
@@ -222,4 +224,27 @@ class AppAsset extends AssetBundle
         'view' => 'ait\utilities\components\View',
     ...
 
+```
+
+## ExtLibAsset
+## Es5ShimAssets
+-------------------------------
+
+### Config AppAsset:
+
+```php
+class AppAsset extends AssetBundle
+{
+    public $basePath = '@webroot';
+    public $baseUrl = '@web';
+    ...
+
+    ...
+    public $depends = [
+        ...
+        'ait\assets\Es5ShimAssets',
+        'ait\assets\ExtLibAsset',
+        ...
+    ];
+}
 ```
