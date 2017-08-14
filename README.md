@@ -13,6 +13,7 @@ Utilities Library
         - [ImageHelper]()
         - [MIMEHelper]()
         - [MIMEReader]()
+        - [Url]()
     - [Gehaviors]()
         - [ChildexistsBehavior]()
         - [GencodeBehavior]()
