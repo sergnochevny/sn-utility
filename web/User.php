@@ -10,7 +10,7 @@
  * Time: 14:23
  */
 
-namespace ait\utils\web;
+namespace ait\utilities\web;
 
 use Yii;
 
