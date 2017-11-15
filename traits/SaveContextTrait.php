@@ -4,7 +4,7 @@
  * Time: 17:06
  */
 
-namespace ait\utilities\traits;
+namespace ait\utility\traits;
 
 
 use Yii;

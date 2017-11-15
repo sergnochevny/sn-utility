@@ -1,6 +1,6 @@
 <?php
 
-namespace ait\utilities\validators\assets;
+namespace ait\utility\validators\assets;
 
 use yii\web\AssetBundle;
 

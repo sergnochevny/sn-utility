@@ -1,8 +1,8 @@
 <?php
 
-namespace ait\utilities\validators;
+namespace ait\utility\validators;
 
-use ait\utilities\validators\assets\DependValidationAsset;
+use ait\utility\validators\assets\DependValidationAsset;
 use Yii;
 use yii\base\InvalidParamException;
 use yii\helpers\Html;

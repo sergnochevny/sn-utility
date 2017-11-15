@@ -4,7 +4,7 @@
  * Time: 11:49
  */
 
-namespace ait\utilities\assets;
+namespace ait\utility\assets;
 
 
 use Phar;

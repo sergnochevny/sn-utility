@@ -60,7 +60,7 @@ to the require section of your `composer.json` file.
 ```php
         ...
         [
-            'class' => 'ait\utilities\AuditColumn',
+            'class' => 'ait\utility\AuditColumn',
             'visualAttributes' => [
                 'status' => function ($model, $attr) {
                     return [$model->getAttributeLabel($attr), Order::getCurrentStatus($model->$attr)];
@@ -92,7 +92,7 @@ to the require section of your `composer.json` file.
 class AppAsset extends AssetBundle
 {
     ...
-    $md = new ait\utilities\MobileDetect();
+    $md = new ait\utility\MobileDetect();
     if ($md->isMobile()) $grid_params['pager'] = ['maxButtonCount' => 6];
     ...
 }
@@ -109,7 +109,7 @@ class AppAsset extends AssetBundle
 
             ...
             'converter' => [
-                'class' => 'ait\utilities\assets\AssetGzipConverter'
+                'class' => 'ait\utility\assets\AssetGzipConverter'
             ]
         ],
 ```
@@ -127,7 +127,7 @@ class AppAsset extends AssetBundle
 ```php
 
         'assetManager' => [
-            'class' => 'ait\utilities\components\AssetManager',
+            'class' => 'ait\utility\components\AssetManager',
             'linkAssets' => true,
             'lazyPublish' => true,
             'injectionCssScheme' => AssetManager::SCHEME_INJECTION_INLINE,
@@ -222,7 +222,7 @@ class AppAsset extends AssetBundle
 
     ...
     'components' => [
-        'view' => 'ait\utilities\components\View',
+        'view' => 'ait\utility\components\View',
     ...
 
 ```

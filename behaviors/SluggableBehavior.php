@@ -4,7 +4,7 @@
  * Time: 20:15
  */
 
-namespace ait\utilities\behaviors;
+namespace ait\utility\behaviors;
 
 use yii\behaviors\SluggableBehavior as yiiSluggable;
 

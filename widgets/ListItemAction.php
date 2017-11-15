@@ -5,7 +5,7 @@
  * @license http://www.yiiframework.com/license/
  */
 
-namespace ait\utilities\widgets;
+namespace ait\utility\widgets;
 
 use Yii;
 use yii\base\Widget;

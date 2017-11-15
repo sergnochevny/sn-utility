@@ -4,7 +4,7 @@
  * Time: 19:12
  */
 
-namespace ait\utilities\components;
+namespace ait\utility\components;
 
 use Yii;
 use yii\base\InvalidConfigException;
@@ -14,7 +14,7 @@ use yii\web\AssetBundle;
 
 /**
  * Class View
- * @package ait\utilities\components
+ * @package ait\utility\components
  *
  * Appended loadJs for post loading all scripts & styles that will be registered by $this->register*** functions
  * Prevented to append loaded scripts. Add 'force' => true to force load script. see below.
@@ -233,7 +233,7 @@ class View extends \yii\web\View
 
     /**
      * Registers the asset manager being used by this view object.
-     * @return \ait\utilities\components\AssetManager the asset manager. Defaults to the "assetManager" application component.
+     * @return \ait\utility\components\AssetManager the asset manager. Defaults to the "assetManager" application component.
      */
     public function getAssetManager()
     {
@@ -242,7 +242,7 @@ class View extends \yii\web\View
 
     /**
      * Sets the asset manager.
-     * @param \ait\utilities\components\AssetManager $value the asset manager
+     * @param \ait\utility\components\AssetManager $value the asset manager
      */
     public function setAssetManager($value)
     {

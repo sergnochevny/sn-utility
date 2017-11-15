@@ -1,6 +1,6 @@
 <?php
 
-namespace ait\utilities\helpers;
+namespace ait\utility\helpers;
 
 use yii\base\InvalidParamException;
 

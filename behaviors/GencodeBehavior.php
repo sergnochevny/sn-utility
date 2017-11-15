@@ -1,6 +1,6 @@
 <?php
 
-namespace ait\utilities\behaviors;
+namespace ait\utility\behaviors;
 
 use Yii;
 use yii\behaviors\AttributeBehavior;

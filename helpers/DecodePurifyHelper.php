@@ -4,7 +4,7 @@
  * Time: 19:56
  */
 
-namespace ait\utilities\helpers;
+namespace ait\utility\helpers;
 
 class DecodePurifyHelper
 {

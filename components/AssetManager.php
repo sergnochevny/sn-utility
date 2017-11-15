@@ -4,17 +4,17 @@
  * Time: 23:11
  */
 
-namespace ait\utilities\components;
+namespace ait\utility\components;
 
 
-use ait\utilities\helpers\FileHelper;
+use ait\utility\helpers\FileHelper;
 use Yii;
 use yii\helpers\StringHelper;
 use yii\helpers\Url;
 
 /**
  * Class AssetManager
- * @package ait\utilities\components
+ * @package ait\utility\components
  *
  *  'assetManager' => [
  *      'class' => 'app\components\AssetManager',

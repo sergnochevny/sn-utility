@@ -1,6 +1,6 @@
 <?php
 
-namespace ait\utilities\behaviors;
+namespace ait\utility\behaviors;
 
 use Yii;
 use yii\base\Behavior;
@@ -10,7 +10,7 @@ use yii\validators\ExistValidator;
 
 /**
  * Class ChildExistsBehavior
- * @package ait\utilities\behaviors
+ * @package ait\utility\behaviors
  *
  *    public function behaviors()
  *   {
