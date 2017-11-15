@@ -1,5 +1,5 @@
 {
-  "name": "ait/utilities",
+  "name": "ait/utility",
   "description": "AIT Yii2 Utilities Library",
   "type": "library",
   "minimum-stability": "stable",
