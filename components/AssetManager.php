@@ -17,7 +17,7 @@ use yii\helpers\Url;
  * @package ait\utility\components
  *
  *  'assetManager' => [
- *      'class' => 'app\components\AssetManager',
+ *      'class' => '\app\components\AssetManager',
  *      'lazyPublish' => true;
  *      'injectionCssScheme' => AssetManager::SCHEME_INJECTION_INLINE,
  *      'injectionJsScheme' => AssetManager::SCHEME_INJECTION_ONLOAD,
