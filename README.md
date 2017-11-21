@@ -38,13 +38,13 @@ The preferred way to install this extension is through [composer](http://getcomp
 Either run
 
 ```
-php composer.phar require --prefer-dist ait/utilities "dev-master"
+php composer.phar require --prefer-dist ait/utility "dev-master"
 ```
 
 or add
 
 ```
-"ait/utilities": "*"
+"ait/utility": "*"
 ```
 
 to the require section of your `composer.json` file.

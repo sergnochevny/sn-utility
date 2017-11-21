@@ -6,7 +6,7 @@ use yii\web\AssetBundle;
 
 class DependValidationAsset extends AssetBundle
 {
-    public $sourcePath = '@ait/utilities/validators/assets';
+    public $sourcePath = '@ait/utility/validators/assets';
     public $js = [
         'depend.validation.js',
     ];
