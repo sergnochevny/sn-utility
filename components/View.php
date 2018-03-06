@@ -130,8 +130,9 @@ class View extends \yii\web\View
             }
             $lines[] = $scripts . "], function() {";
             $this->renderJs($ajaxMode, $lines);
+            $lines[] = '});';
         }
-        if (!empty($lines)) $lines[] = '});})();';
+        if (!empty($lines)) $lines[] = '})();';
 
         return (empty($lines) ? '' : preg_replace("/ {2,}/", " ", strtr(Html::script(implode("\n", $lines), ['type' => 'text/javascript']), ["\n" => '', "\r" => ''])));
     }
