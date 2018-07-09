@@ -1,12 +1,12 @@
 <?php
 
-namespace ait\utility\validators\assets;
+namespace sn\utility\validators\assets;
 
 use yii\web\AssetBundle;
 
 class DependValidationAsset extends AssetBundle
 {
-    public $sourcePath = '@ait/utility/validators/assets';
+    public $sourcePath = '@sn/utility/validators/assets';
     public $js = [
         'depend.validation.js',
     ];

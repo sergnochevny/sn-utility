@@ -1,6 +1,6 @@
 <?php
 
-namespace ait\utility\assets;
+namespace sn\utility\assets;
 
 use yii\web\AssetBundle;
 

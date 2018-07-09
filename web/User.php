@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2017. AIT
+ * Copyright (c) 2017. sn
  */
 
 /**
@@ -10,7 +10,7 @@
  * Time: 14:23
  */
 
-namespace ait\utility\web;
+namespace sn\utility\web;
 
 use Yii;
 

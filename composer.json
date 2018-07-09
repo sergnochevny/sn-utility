@@ -1,6 +1,6 @@
 {
-  "name": "ait/utility",
-  "description": "AIT Yii2 Utilities Library",
+  "name": "sn/utility",
+  "description": "sn Yii2 Utilities Library",
   "type": "library",
   "minimum-stability": "stable",
   "require": {
@@ -13,12 +13,12 @@
   "authors": [
     {
       "name": "Serg Nochevny",
-      "email": "serg.nochevny@engineering.ait.com"
+      "email": "serg.nochevny@engineering.sn.com"
     }
   ],
   "autoload": {
     "psr-4": {
-      "ait\\utility\\": ""
+      "sn\\utility\\": ""
     }
   },
   "config": {

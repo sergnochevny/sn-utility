@@ -1,6 +1,6 @@
 <?php
 
-namespace ait\utility\behaviors;
+namespace sn\utility\behaviors;
 
 use Yii;
 use yii\base\Behavior;

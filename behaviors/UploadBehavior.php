@@ -4,7 +4,7 @@
  * Time: 15:51
  */
 
-namespace ait\utility\behaviors;
+namespace sn\utility\behaviors;
 
 
 use yii\base\Behavior;

@@ -4,7 +4,7 @@
  * Time: 10:41
  */
 
-namespace ait\utility\helpers;
+namespace sn\utility\helpers;
 
 
 class MIMEHelper

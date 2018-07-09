@@ -1,6 +1,6 @@
 <?php
 
-namespace ait\utility;
+namespace sn\utility;
 
 
 

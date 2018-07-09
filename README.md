@@ -38,13 +38,13 @@ The preferred way to install this extension is through [composer](http://getcomp
 Either run
 
 ```
-php composer.phar require --prefer-dist ait/utility "dev-master"
+php composer.phar require --prefer-dist sn/utility "dev-master"
 ```
 
 or add
 
 ```
-"ait/utility": "*"
+"sn/utility": "*"
 ```
 
 to the require section of your `composer.json` file.
@@ -60,7 +60,7 @@ to the require section of your `composer.json` file.
 ```php
         ...
         [
-            'class' => 'ait\utility\AuditColumn',
+            'class' => 'sn\utility\AuditColumn',
             'visualAttributes' => [
                 'status' => function ($model, $attr) {
                     return [$model->getAttributeLabel($attr), Order::getCurrentStatus($model->$attr)];
@@ -92,7 +92,7 @@ to the require section of your `composer.json` file.
 class AppAsset extends AssetBundle
 {
     ...
-    $md = new ait\utility\MobileDetect();
+    $md = new sn\utility\MobileDetect();
     if ($md->isMobile()) $grid_params['pager'] = ['maxButtonCount' => 6];
     ...
 }
@@ -109,7 +109,7 @@ class AppAsset extends AssetBundle
 
             ...
             'converter' => [
-                'class' => 'ait\utility\assets\AssetGzipConverter'
+                'class' => 'sn\utility\assets\AssetGzipConverter'
             ]
         ],
 ```
@@ -127,7 +127,7 @@ class AppAsset extends AssetBundle
 ```php
 
         'assetManager' => [
-            'class' => 'ait\utility\components\AssetManager',
+            'class' => 'sn\utility\components\AssetManager',
             'linkAssets' => true,
             'lazyPublish' => true,
             'injectionCssScheme' => AssetManager::SCHEME_INJECTION_INLINE,
@@ -171,7 +171,7 @@ class AppAsset extends AssetBundle
                         YII_ENV_DEV ? 'jquery.js' : 'jquery.min.js',
                     ],
                 ],
-                'ait\authorize\JqueryPaymentAsset' => [
+                'sn\authorize\JqueryPaymentAsset' => [
                     'js' => [
                         YII_ENV_DEV ? 'lib/jquery.payment.js' : 'lib/jquery.payment.min.js',
                     ]
@@ -222,7 +222,7 @@ class AppAsset extends AssetBundle
 
     ...
     'components' => [
-        'view' => 'ait\utility\components\View',
+        'view' => 'sn\utility\components\View',
     ...
 
 ```
@@ -243,8 +243,8 @@ class AppAsset extends AssetBundle
     ...
     public $depends = [
         ...
-        'ait\assets\Es5ShimAssets',
-        'ait\assets\ExtLibAsset',
+        'sn\assets\Es5ShimAssets',
+        'sn\assets\ExtLibAsset',
         ...
     ];
 }

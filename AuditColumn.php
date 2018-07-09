@@ -1,6 +1,6 @@
 <?php
 
-namespace ait\utility;
+namespace sn\utility;
 
 use Yii;
 use yii\base\Model;
